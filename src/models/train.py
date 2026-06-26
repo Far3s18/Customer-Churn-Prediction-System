@@ -26,49 +26,7 @@ from src.models.evaluate import (
 )
 from src.utils.seed import seed_everything
 from src.utils.split_data import split_data
-
-
-def log_metrics(
-    prefix: str,
-    metrics: dict[str, float],
-    step: int | None = None,
-) -> None:
-    """
-    Log a dictionary of metrics to MLflow using a common prefix.
-    """
-
-    for metric_name, value in metrics.items():
-        mlflow.log_metric(
-            key=f"{prefix}_{metric_name}",
-            value=float(value),
-            step=step,
-        )
-
-
-def make_json_serializable(value: Any) -> Any:
-    """
-    Convert NumPy and nested objects into JSON-serializable Python objects.
-    """
-
-    if isinstance(value, dict):
-        return {key: make_json_serializable(item) for key, item in value.items()}
-
-    if isinstance(value, list):
-        return [make_json_serializable(item) for item in value]
-
-    if isinstance(value, tuple):
-        return tuple(make_json_serializable(item) for item in value)
-
-    if isinstance(value, np.ndarray):
-        return value.tolist()
-
-    if isinstance(value, np.integer):
-        return int(value)
-
-    if isinstance(value, np.floating):
-        return float(value)
-
-    return value
+from src.utils.helpers import log_metrics, make_json_serializable
 
 
 def train_model(
