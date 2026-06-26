@@ -19,3 +19,4 @@ data/processed/
 
 !src/serving/model/
 !src/serving/model/**
+MLFlow.db
